@@ -1,0 +1,138 @@
+/* ═══════════ MODERN APP UI (loads AFTER style.css; bill/print styles untouched) ═══════════ */
+:root{--p:#ff7a1a;--p2:#ffa04d;--ink:#1d2433;--mut:#8a94a6;--line:#e8edf5;--soft:#fff3e8;--mint:#19b394;--bg:#f3f6fb}
+body{background:var(--bg)}
+#appUi{background:var(--bg);padding-bottom:8px;animation:fadeUp .35s ease both}
+#printPage{animation:slideIn .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes slideIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(8px)}to{opacity:1;transform:none}}
+@keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* header */
+#appUi .app-hdr{background:linear-gradient(135deg,#ffe9d6 0%,#e3f3fc 100%);border:0;border-radius:0 0 28px 28px;padding:16px 18px 18px;box-shadow:0 8px 24px rgba(255,122,26,.12);position:relative;top:auto}
+#appUi .hdr-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+#appUi .lbox{background:#fff;border-radius:16px;padding:6px 10px;box-shadow:0 4px 14px rgba(0,0,0,.08);width:auto;height:auto}
+#appUi .lbox img{height:44px;width:auto;max-width:110px;object-fit:contain;display:block}
+#appUi .mob{font-size:11.5px;font-weight:600;line-height:1.5;color:var(--ink);background:rgba(255,255,255,.7);padding:6px 12px;border-radius:14px;text-align:right}
+#appUi .sn{font-family:"DM Sans",sans-serif;font-weight:800;font-size:20px;color:var(--ink);margin-top:12px;letter-spacing:-.2px}
+#appUi .ss,#appUi .sa{font-size:12px;color:#5b6577;margin-top:2px}
+
+/* cards */
+#appUi .sec{background:#fff;margin:14px 14px 0;padding:16px;border-radius:22px;box-shadow:0 6px 20px rgba(29,36,51,.06);animation:fadeUp .45s ease both;border:0}
+#appUi .sec:nth-of-type(1){animation-delay:.05s}#appUi .sec:nth-of-type(2){animation-delay:.12s}#appUi .sec:nth-of-type(3){animation-delay:.19s}
+#appUi .stl{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;border:0;padding:0}
+#appUi .stl::before{content:"";width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--p2));box-shadow:0 0 0 4px var(--soft)}
+
+/* fields */
+#appUi input,#appUi textarea,#appUi select,#itemModal input{font-family:"DM Sans",sans-serif;font-size:15px;color:var(--ink);background:#f6f8fc;border:1.5px solid transparent;border-radius:14px;padding:13px 14px;transition:border-color .2s,box-shadow .2s,background .2s}
+#appUi textarea{height:68px}
+#appUi input:focus,#appUi textarea:focus,#appUi select:focus,#itemModal input:focus{outline:0;background:#fff;border-color:var(--p);box-shadow:0 0 0 4px rgba(255,122,26,.14)}
+#appUi .heading-select{font-weight:700;color:var(--p);background-color:var(--soft)}
+#appUi .ig label,#itemModal .mig label{font-size:11px;font-weight:700;color:var(--mut);letter-spacing:.6px}
+
+/* items */
+#appUi .ilb{display:none}
+#itemsWrap:empty{border:2px dashed var(--line);border-radius:16px;padding:22px 10px;text-align:center;margin-bottom:12px;color:var(--mut);font-size:13px}
+#itemsWrap:empty::before{content:"🛒  No items yet — tap Add Item"}
+#appUi .ir{display:grid;grid-template-columns:1fr 1fr 1.3fr auto;column-gap:8px;row-gap:2px;background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:12px;margin-bottom:10px;animation:pop .3s cubic-bezier(.2,.8,.2,1) both;transition:transform .15s,box-shadow .2s}
+#appUi .ir:active{transform:scale(.985)}
+#appUi .ir input{pointer-events:none}
+#appUi .ir input:nth-child(1){grid-column:1/4;grid-row:1;background:none;padding:2px 0;font-weight:700;font-size:15px;border-radius:0}
+#appUi .ir input:nth-child(2){grid-column:1;grid-row:3}
+#appUi .ir input:nth-child(3){grid-column:2;grid-row:3}
+#appUi .ir input:nth-child(4){grid-column:3;grid-row:3;color:var(--p);font-weight:800}
+#appUi .ir input:nth-child(n+2):nth-child(-n+4){background:var(--bg);padding:8px 10px;font-size:14px;font-weight:600;text-align:center;border-radius:11px;min-width:0;width:100%}
+#appUi .ir-l{font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.6px;grid-row:2;margin-top:6px}
+#appUi .ir-l:nth-child(5){grid-column:1}#appUi .ir-l:nth-child(6){grid-column:2}#appUi .ir-l:nth-child(7){grid-column:3}
+#appUi .actions-cell{grid-column:4;grid-row:1/4;display:flex;flex-direction:column;justify-content:center;gap:8px}
+#appUi .xbtn{width:36px;height:36px;min-width:36px;padding:0;flex:none;line-height:1;border:0;border-radius:50%;font-size:16px;display:grid;place-items:center;cursor:pointer;transition:transform .15s}
+#appUi .xbtn:active{transform:scale(.88)}
+#appUi .x-edit{background:#e8f3fd}#appUi .x-del{background:#ffe9e9;color:#d63c3c;font-weight:800}
+#appUi .badd{width:100%;border:2px dashed var(--p);background:var(--soft);color:var(--p);font-weight:800;font-size:15px;border-radius:16px;padding:13px;cursor:pointer;transition:transform .15s,background .2s}
+#appUi .badd:active{transform:scale(.97);background:#ffe5d0}
+
+/* totals */
+#appUi .sc{background:var(--bg);border-radius:16px;padding:12px 14px;margin-top:6px}
+#appUi .sr{display:flex;justify-content:space-between;font-size:14px;color:#5b6577;padding:4px 0}
+#appUi .gr{display:flex;justify-content:space-between;font-size:17px;font-weight:800;color:var(--p);border-top:1.5px dashed #d5dce8;margin-top:6px;padding-top:10px}
+
+/* Swiggy-style bottom bar */
+#appUi .cart-bar{position:sticky;bottom:12px;margin:16px 14px 6px;padding:10px 10px 10px 20px;border-radius:22px;background:linear-gradient(135deg,#1d2433,#323d5a);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 12px 28px rgba(29,36,51,.35);z-index:20}
+#appUi .cart-bar small{display:block;font-size:11px;opacity:.7;letter-spacing:.5px;text-transform:uppercase}
+#appUi .cart-bar b{font-size:20px;font-weight:800}
+#appUi .cart-bar .bgen{width:auto;border:0;border-radius:16px;padding:14px 22px;font-size:15px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--p),var(--p2));box-shadow:0 6px 16px rgba(255,122,26,.45);cursor:pointer;transition:transform .15s}
+#appUi .cart-bar .bgen:active{transform:scale(.94)}
+
+/* bottom-sheet modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,20,35,.5);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);align-items:flex-end;justify-content:center;z-index:100;animation:fade .2s ease}
+.modal-box{width:100%;max-width:480px;max-height:92vh;overflow:auto;background:#fff;border-radius:28px 28px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.2);animation:sheet .35s cubic-bezier(.2,.8,.2,1)}
+.modal-hdr{border:0;text-transform:none;letter-spacing:0;background:none;color:var(--ink);font-size:18px;font-weight:800;padding:22px 20px 6px;position:relative;text-align:left}
+.modal-hdr::before{content:"";position:absolute;top:8px;left:50%;width:42px;height:4px;margin-left:-21px;border-radius:4px;background:#d9dfea}
+.modal-body{padding:8px 20px}
+.modal-ftr{display:flex;gap:10px;padding:10px 20px 20px}
+.m-btn{flex:1;border:0;border-radius:16px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;transition:transform .15s}
+.m-btn:active{transform:scale(.95)}
+.m-cancel{background:var(--bg);color:#5b6577}
+.m-save{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;box-shadow:0 6px 16px rgba(255,122,26,.4)}
+.custom-suggest-panel{border-radius:14px;box-shadow:0 10px 28px rgba(29,36,51,.18);border:1px solid var(--line);overflow:hidden}
+.suggest-item{transition:background .15s}.suggest-item:hover,.suggest-item:active{background:var(--soft)}
+
+/* preview screen toolbar */
+#printPage .ptb-wrap{padding:12px 14px 0}
+#printPage .ptb-back{border:0;background:#fff;color:var(--ink);font-weight:800;border-radius:30px;padding:10px 18px;box-shadow:0 4px 14px rgba(29,36,51,.1);cursor:pointer;transition:transform .15s}
+#printPage .ptb-back:active{transform:scale(.94)}
+#printPage .fmt-row{display:flex;gap:10px;margin:12px 14px 0}
+#printPage .fmt-btn{flex:1;border:2px solid transparent;background:#fff;color:var(--ink);border-radius:18px;padding:12px 8px;font-weight:700;box-shadow:0 4px 14px rgba(29,36,51,.06);transition:all .25s}
+#printPage .fmt-btn small{color:var(--mut);font-weight:500}
+#printPage .fmt-btn.active{border-color:var(--p);background:var(--soft);color:var(--p);box-shadow:0 6px 18px rgba(255,122,26,.22)}
+#printPage .act-row{display:flex;gap:10px;margin:12px 14px}
+#printPage .act-btn{flex:1;border:0;border-radius:18px;padding:14px;font-size:15px;font-weight:800;color:#fff;cursor:pointer;transition:transform .15s}
+#printPage .act-btn:active{transform:scale(.95)}
+#printPage .tbp{background:linear-gradient(135deg,#1d2433,#323d5a)}
+#printPage .tbd{background:linear-gradient(135deg,var(--p),var(--p2));box-shadow:0 6px 16px rgba(255,122,26,.4)}
+@media print{#appUi,#printPage{animation:none!important}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+/* ═══ Add Item popup: centered, always fits the visible screen ═══
+   Paste at the END of css/ui.css (works with any theme version). */
+.modal-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  width:100%;height:100vh;height:100dvh;           /* dvh = real visible height on mobile browsers */
+  align-items:center!important;justify-content:center;
+  padding:16px;box-sizing:border-box;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+}
+.modal-box{
+  width:100%;max-width:420px;
+  max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);
+  overflow-y:auto;margin:auto;
+  border-radius:24px!important;                    /* round all 4 corners */
+  animation:modalPop .25s cubic-bezier(.2,.8,.2,1)!important;
+}
+.modal-hdr::before{display:none!important}          /* no drag-handle on a centered popup */
+.modal-ftr{position:sticky;bottom:0;background:inherit}  /* buttons always visible */
+@keyframes modalPop{from{transform:scale(.9)}to{transform:none}}
+/* ═══ Add Item popup: centered, always fits the visible screen ═══
+   Paste at the END of css/ui.css (works with any theme version). */
+.modal-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  width:100%;height:100vh;height:100dvh;           /* dvh = real visible height on mobile browsers */
+  align-items:center!important;justify-content:center;
+  padding:16px;box-sizing:border-box;
+  overflow:hidden;overscroll-behavior:contain;touch-action:none;
+}
+.modal-box{
+  width:100%;max-width:420px;
+  max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);
+  display:flex;flex-direction:column;overflow:hidden;margin:auto;touch-action:auto;
+  border-radius:24px!important;                    /* round all 4 corners */
+  animation:modalPop .25s cubic-bezier(.2,.8,.2,1)!important;
+}
+.modal-hdr::before{display:none!important}          /* no drag-handle on a centered popup */
+.modal-hdr{flex:none}                               /* title stays on top */
+.modal-body{flex:1 1 auto;min-height:0;overflow-y:auto;   /* ONLY the fields scroll */
+  overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.modal-ftr{flex:none;position:static}               /* Cancel / Add to Bill never move */
+@keyframes modalPop{from{transform:scale(.9)}to{transform:none}}

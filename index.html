@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#ffe9d6">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Sri Durga Billing">
+
+  <title>Sri Durga Electrical &amp; Sounds — Billing</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="logo.jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/ui.css">
+
+  <script src="html2pdf.bundle.min.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("sw.js")
+          .then(() => console.log("SW registered"))
+          .catch((e) => console.log("SW error", e));
+      });
+    }
+  </script>
+</head>
+<body>
+
+  <!-- ===== BILLING FORM ===== -->
+  <div id="appUi">
+    <div class="app-hdr">
+      <div class="hdr-top">
+        <div class="lbox">
+          <img id="appLogo" src="assets\logo.jpg" alt="Logo">
+        </div>
+        <div class="mob">
+          Mob : 9964668846<br>
+          9742619525<br>
+          9449663267
+        </div>
+      </div>
+      <div class="sn">Sri Durga Electrical &amp; Sounds</div>
+      <div class="ss">Near Sathyashri Kalyana Mantapa</div>
+      <div class="sa">Panemangalore, Bantwal Taluk, D.K. – 574 231</div>
+    </div>
+
+    <div class="sec">
+      <div class="stl">Customer Information</div>
+      <div class="r2 heading-cust-row">
+        <select id="headingSelect" class="heading-select" onchange="onHeadingChange()">
+          <option value="BILL">BILL</option>
+          <option value="RECEIPT">RECEIPT</option>
+          <option value="QUOTATION">QUOTATION</option>
+          <option value="__custom__">Custom…</option>
+        </select>
+        <input id="cust" placeholder="Customer Name" oninput="capitalizeFirst(this)">
+      </div>
+      <input id="headingCustom" class="heading-custom" placeholder="Type custom heading" style="display:none;">
+      <input type="hidden" id="heading" value="BILL">
+
+      <div class="r2">
+        <input
+          id="phon"
+          type="tel"
+          inputmode="numeric"
+          maxlength="10"
+          pattern="[0-9]{10}"
+          placeholder="Mobile Number 1"
+          oninput="validateMobile(this)"
+        >
+        <input
+          id="phon2"
+          type="tel"
+          inputmode="numeric"
+          maxlength="10"
+          pattern="[0-9]{10}"
+          placeholder="Mobile Number 2"
+          oninput="validateMobile(this)"
+        >
+      </div>
+      <textarea id="addr" placeholder="Customer Address" oninput="capitalizeFirst(this)"></textarea>
+      <input id="place" placeholder="Placed Location (e.g. Mangaluru, Hassan...)">
+      <input id="bdate" type="date">
+    </div>
+
+    <div class="sec">
+      <div class="stl">Items</div>
+      <div class="ilb">
+        <span>Item Name</span>
+        <span>Qty</span>
+        <span>Days</span>
+        <span>Rate ₹</span>
+        <span></span>
+      </div>
+      <div id="itemsWrap"></div>
+      <button class="btn badd" onclick="openModal(null)">+ Add Item</button>
+    </div>
+
+    <div class="sec">
+      <div class="stl">Adjustments</div>
+      <div class="r2">
+        <div class="ig">
+          <label>Discount (₹)</label>
+          <input id="disc" type="number" value="0" min="0" oninput="calcTot()">
+        </div>
+        <div class="ig">
+          <label>Advance Paid (₹)</label>
+          <input id="adv" type="number" value="0" min="0" oninput="calcTot()">
+        </div>
+      </div>
+      <div class="sc">
+        <div class="sr"><span>Subtotal</span><span id="s_sub">₹0.00</span></div>
+        <div class="sr"><span>Discount</span><span id="s_disc">₹0.00</span></div>
+        <div class="sr"><span>Advance Paid</span><span id="s_adv">₹0.00</span></div>
+        <div class="gr"><span>Payable Amt</span><span id="s_bal">₹0.00</span></div>
+      </div>
+    </div>
+
+    <div class="cart-bar">
+      <div><small>Payable</small><b id="barTotal">₹0.00</b></div>
+      <button class="btn bgen" onclick="generate()">Generate Bill →</button>
+    </div>
+  </div>
+
+  <!-- ===== ADD / EDIT ITEM MODAL ===== -->
+  <div id="itemModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-hdr" id="modalTitle">Add New Item</div>
+      <div class="modal-body">
+        <input type="hidden" id="edit_id">
+        <div class="mig">
+          <label>Item Name / Description</label>
+          <input
+            id="p_name"
+            placeholder="E.g., LED Par Lights"
+            autocomplete="off"
+            oninput="filterSuggestions(this.value)"
+          >
+          <div id="suggestBox" class="custom-suggest-panel"></div>
+        </div>
+        <div class="mig">
+          <label>Quantity</label>
+          <input id="p_qty" type="text">
+        </div>
+        <div class="mig">
+          <label>Days</label>
+          <input id="p_days" type="text">
+        </div>
+        <div class="mig">
+          <label>Rate / Total Price (₹)</label>
+          <input id="p_price" type="number" min="0" step="0.01" placeholder="0.00">
+        </div>
+      </div>
+      <div class="modal-ftr">
+        <button class="m-btn m-cancel" onclick="closeModal()">Cancel</button>
+        <button class="m-btn m-save" id="modalSaveBtn" onclick="saveModal()">Add to Bill</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== BILL PREVIEW / PRINT ===== -->
+  <div id="printPage">
+    <div class="ptb-wrap">
+      <button class="ptb-back" onclick="goBack()">⬅ Edit</button>
+    </div>
+
+    <div class="fmt-row">
+      <button class="fmt-btn active" id="fmt-plain" onclick="setFormat('plain')">
+        📄 Non Pre-Printed<br>
+        <small>Without Header</small>
+      </button>
+      <button class="fmt-btn" id="fmt-preprinted" onclick="setFormat('preprinted')">
+        🖨 Pre-Printed<br>
+        <small>With Header</small>
+      </button>
+    </div>
+
+    <div class="act-row">
+      <button class="act-btn tbp" onclick="doPrint()">🖨 Print</button>
+      <button class="act-btn tbd" onclick="doPDF()">⬇ Download PDF</button>
+    </div>
+
+    <div class="print-outer">
+      <div id="billPage"></div>
+    </div>
+  </div>
+
+  <div id="a4Container"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
