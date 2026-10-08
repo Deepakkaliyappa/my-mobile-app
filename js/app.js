@@ -650,7 +650,9 @@ function ensureHtml2pdf() {
   return new Promise(function (resolve, reject) {
     const srcs = [
       "html2pdf.bundle.min.js",
+      "js/html2pdf.bundle.min.js",
       "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js",
+      "https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.2/dist/html2pdf.bundle.min.js",
     ];
     (function next(i) {
       if (typeof html2pdf !== "undefined") return resolve();
