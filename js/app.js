@@ -447,7 +447,7 @@ function createPage(d, fmt, pageIndex) {
     "<tbody></tbody></table>" +
     '<div class="pg-foot">' + CONTINUE_HTML + "</div>" +
     "</div>" +
-    '<div class="pg-credit">Original copy - Computer Generated Document</div>' +
+    '<div class="pg-credit">Designed by ❤️ Durga Team</div>' +
     '<div class="pg-num"></div>';
   return page;
 }
@@ -591,6 +591,18 @@ async function doPDF() {
     alert("Generate the bill first.");
     return;
   }
+  if (pdfBusy) return;
+  setPdfBusy(true);
+  try {
+    await ensureHtml2pdf();
+  } catch (e) {
+    setPdfBusy(false);
+    alert(
+      "PDF library is missing.\n\nPut the file html2pdf.bundle.min.js in the same folder as index.html " +
+        "(or connect to the internet) and refresh the page."
+    );
+    return;
+  }
 
   // Non Pre-Printed (letterhead sheet) -> custom small size. Pre-Printed -> A4.
   const paper = PAPER[currentFormat] || PAPER.plain;
@@ -620,13 +632,65 @@ async function doPDF() {
       })(pages[k]);
     }
     const blob = await worker.output("blob");
-    savePdfBlob(blob, "SriDurga-Bill.pdf");
+    finishPdf(blob, "SriDurga-Bill.pdf");
   } catch (err) {
     alert(
       "Could not generate the PDF. Please try again.\n" +
         (err && err.message ? err.message : "")
     );
+  } finally {
+    setPdfBusy(false);
   }
+}
+
+// Makes sure the html2pdf library is loaded. If the local file is missing
+// (html2pdf.bundle.min.js next to index.html) it tries the internet copy.
+function ensureHtml2pdf() {
+  if (typeof html2pdf !== "undefined") return Promise.resolve();
+  return new Promise(function (resolve, reject) {
+    const srcs = [
+      "html2pdf.bundle.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js",
+    ];
+    (function next(i) {
+      if (typeof html2pdf !== "undefined") return resolve();
+      if (i >= srcs.length) return reject(new Error("html2pdf not available"));
+      const sc = document.createElement("script");
+      sc.src = srcs[i];
+      sc.onload = function () { typeof html2pdf !== "undefined" ? resolve() : next(i + 1); };
+      sc.onerror = function () { next(i + 1); };
+      document.head.appendChild(sc);
+    })(0);
+  });
+}
+
+// Download button feedback + double-tap guard while the PDF is being made.
+let pdfBusy = false;
+function setPdfBusy(on) {
+  pdfBusy = on;
+  const btn = document.querySelector(".act-btn.tbd");
+  if (!btn) return;
+  if (on) {
+    btn.dataset.label = btn.innerHTML;
+    btn.innerHTML = "⏳ Preparing PDF…";
+    btn.disabled = true;
+  } else {
+    if (btn.dataset.label) btn.innerHTML = btn.dataset.label;
+    btn.disabled = false;
+  }
+}
+
+// PDF is ready -> save it straight to the device (no popup, no share sheet).
+function finishPdf(blob, fileName) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileName;
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
 }
 
 // Robust save/share for Android WebView / APK environments, where a plain
