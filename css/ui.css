@@ -140,7 +140,7 @@ body{background:var(--bg)}
 /* ═══ App header brand block: logo (left) | divider | title + tagline (right) ═══
    Append to the END of css/ui.css. Works in light and dark themes (white banner card). */
 #appUi .app-hdr{padding:14px 14px 18px}
-#appUi .brand-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+#appUi .brand-row{display:flex;align-items:center;gap:38px;margin-bottom:12px}
 #appUi .brand-logo{flex:0 0 27%;max-width:100px}
 #appUi .brand-logo img{width:100%;height:auto;display:block}
 #appUi .brand-text{flex:1;min-width:0;text-align:left}
