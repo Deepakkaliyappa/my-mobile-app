@@ -144,7 +144,7 @@ body{background:var(--bg)}
 #appUi .brand-logo{flex:0 0 27%;max-width:100px}
 #appUi .brand-logo img{width:100%;height:auto;display:block}
 #appUi .brand-text{flex:1;min-width:0;text-align:left}
-#appUi .brand-title{font-family:"DM Sans",system-ui,sans-serif;font-weight:900;font-size:clamp(32px,11vw,44px);line-height:1;letter-spacing:-.5px;text-shadow:2px 0 #fff,-2px 0 #fff,0 2px #fff,0 -2px #fff,1.5px 1.5px #fff,-1.5px 1.5px #fff,1.5px -1.5px #fff,-1.5px -1.5px #fff,0 4px 5px rgba(0,0,0,.28)}
+#appUi .brand-title{text-align:center;white-space:nowrap;position:relative;left:-20px;font-family:"DM Sans",system-ui,sans-serif;font-weight:900;font-size:clamp(32px,11vw,44px);line-height:1;letter-spacing:-.5px;text-shadow:2px 0 #fff,-2px 0 #fff,0 2px #fff,0 -2px #fff,1.5px 1.5px #fff,-1.5px 1.5px #fff,1.5px -1.5px #fff,-1.5px -1.5px #fff,0 4px 5px rgba(0,0,0,.28)}
 #appUi .brand-sub{font-family:"DM Sans",system-ui,sans-serif;font-weight:800;font-size:clamp(10px,3vw,12.5px);line-height:1.3;margin-top:6px;text-shadow:1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,0 2px 3px rgba(0,0,0,.22)}
 #appUi .brand-text .r{color:#e3112c}
 #appUi .brand-text .b{color:#0b2a9c}
